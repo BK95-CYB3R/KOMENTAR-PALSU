@@ -4,19 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube Replica - BayuDubai Hacker Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { 
             --cp-pink: #ff007f;
             --cp-bg: #0d0208;
             --yt-white: #ffffff;
+            --yt-blue: #065fd4;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Roboto', Arial, sans-serif;
+            /* MENGGUNAKAN SAN FRANCISCO REGULAR */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;                
             background-color: var(--cp-bg);
             display: flex;
             flex-direction: column;
@@ -77,22 +80,26 @@
         .comment-body { flex-grow: 1; min-width: 0; }
         .comment-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 2px; line-height: 1.2; }
         
-        .username { font-size: 13px; font-weight: 700; color: #0f0f0f; }
+        .username { font-size: 13px; font-weight: 600; color: #0f0f0f; }
         .username::after { content: "•"; color: #606060; margin: 0 5px; font-weight: normal; font-size: 10px; }
-        .time { font-size: 12px; color: #606060; margin-right: 8px; }
+        .time { font-size: 12px; color: #606060; margin-right: 8px; font-weight: 400; }
 
         .verified-badge { display: none; align-items: center; margin-right: 5px; }
         .verified-badge.active { display: inline-flex; }
-        .verified-badge svg { width: 13px; height: 13px; fill: #065fd4; }
+        .verified-badge svg { width: 13px; height: 13px; fill: var(--yt-blue); }
 
         .creator-badge {
             display: inline-flex; align-items: center; background-color: #f2f2f2;
-            color: #065fd4; font-size: 11px; font-weight: 500;
+            color: var(--yt-blue); font-size: 11px; font-weight: 500;
             padding: 2px 8px; border-radius: 12px; height: 18px;
         }
-        .creator-badge svg { width: 11px; height: 11px; fill: #065fd4; margin-right: 4px; }
+        .creator-badge svg { width: 11px; height: 11px; fill: var(--yt-blue); margin-right: 4px; }
 
-        .comment-text { font-size: 14px; color: #0f0f0f; line-height: 1.4; margin-bottom: 6px; white-space: pre-wrap; }
+        /* Font Size Komentar (Mudah Dibaca & Normal) */
+        .comment-text { font-size: 15px; color: #0f0f0f; line-height: 1.4; margin-bottom: 6px; white-space: pre-wrap; font-weight: 400; }
+        
+        /* Warna Biru untuk Nama Tag */
+        .blue-tag { color: var(--yt-blue); cursor: pointer; font-weight: 500; }
 
         .footer-actions { display: flex; align-items: center; position: relative; height: 20px; }
         .text-btn { font-size: 12px; font-weight: 500; color: #0f0f0f; margin-right: 18px; cursor: pointer; }
@@ -221,7 +228,7 @@
                             Pembuat
                         </div>
                     </div>
-                    <div class="comment-text" id="v2-text">Pagi kk ganti cek inbox kak kirim no dana/rek</div>
+                    <div class="comment-text" id="v2-text"></div>
                     <div class="footer-actions">
                         <span class="text-btn">Balas</span>
                         <div class="like-dislike-group">
@@ -247,8 +254,8 @@
         <div class="section">
             <h4>User 1 (Atas)</h4>
             <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v1-avatar')"></div>
-            <div class="input-item"><label>Nama</label><input type="text" id="in-n1" value="By.Bayu Kurniawan" oninput="updateTxt('in-n1','v1-name')"></div>
-            <div class="input-item"><label>Waktu</label><input type="text" id="in-t1" value="6 mnt" oninput="updateTxt('in-t1','v1-time')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n1" value="By.Bayu Kurniawan" oninput="syncBalasan()"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t1" value="6 mnt" oninput="updateTxt('in-t1','v1-name')"></div>
             <div class="input-item"><label>Komentar</label><textarea id="in-c1" oninput="updateTxt('in-c1','v1-text')">Pagi kak bayu</textarea></div>
             <div class="toggle-group">
                 <input type="checkbox" id="chk1" checked onchange="toggleBadge('chk1', 'v1-badge')">
@@ -261,7 +268,7 @@
             <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v2-avatar')"></div>
             <div class="input-item"><label>Nama</label><input type="text" id="in-n2" value="Bayu Kurniawan" oninput="updateTxt('in-n2','v2-name')"></div>
             <div class="input-item"><label>Waktu</label><input type="text" id="in-t2" value="Baru saja" oninput="updateTxt('in-t2','v2-time')"></div>
-            <div class="input-item"><label>Komentar</label><textarea id="in-c2" oninput="updateTxt('in-c2','v2-text')">Pagi kk ganti cek inbox kak kirim no dana/rek</textarea></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c2" oninput="syncBalasan()">Pagi kk ganti cek inbox kak kirim no dana/rek</textarea></div>
             <div class="toggle-group">
                 <input type="checkbox" id="chk2" checked onchange="toggleBadge('chk2', 'v2-badge')">
                 <label for="chk2">Munculkan Centang Biru</label>
@@ -297,6 +304,15 @@
         }
         setInterval(drawMatrix, 50);
 
+        function syncBalasan() {
+            const namaTujuan = document.getElementById('in-n1').value;
+            const isiKomentar = document.getElementById('in-c2').value;
+            document.getElementById('v1-name').innerText = namaTujuan;
+            document.getElementById('v2-text').innerHTML = `<span class="blue-tag">${namaTujuan}</span> ${isiKomentar}`;
+        }
+
+        syncBalasan();
+
         function updateTxt(inputId, displayId) { document.getElementById(displayId).innerText = document.getElementById(inputId).value; }
         
         function updateImg(input, imgId) {
@@ -304,6 +320,1040 @@
                 const reader = new FileReader();
                 reader.onload = e => document.getElementById(imgId).src = e.target.result;
                 reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function toggleBadge(chkId, badgeId) {
+            const badge = document.getElementById(badgeId);
+            document.getElementById(chkId).checked ? badge.classList.add('active') : badge.classList.remove('active');
+        }
+
+        function downloadImage() {
+            html2canvas(document.querySelector("#capture-target"), { 
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'youtube-replica-bayudubai.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Replica - BayuDubai Hacker Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { 
+            --cp-pink: #ff007f;
+            --cp-bg: #0d0208;
+            --yt-white: #ffffff;
+            --yt-blue: #065fd4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* MENGGUNAKAN SAN FRANCISCO REGULAR */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;                
+            background-color: var(--cp-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4;
+        }
+
+        /* Teks Berjalan */
+        .marquee-top {
+            width: 100%; background: var(--cp-pink); color: #000;
+            padding: 10px 0; font-family: 'Fira Code', monospace;
+            font-weight: 900; font-size: 14px;
+            white-space: nowrap; overflow: hidden;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 0 20px var(--cp-pink);
+        }
+
+        .marquee-top span {
+            display: inline-block; padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* --- AREA VISUAL YOUTUBE --- */
+        #capture-target {
+            background-color: var(--yt-white);
+            width: 100%;
+            max-width: 420px;
+            padding: 20px 0;
+            margin-top: 30px;
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6);
+            border-radius: 4px;
+        }
+        
+        .inner-content { padding: 0 16px; }
+        .comment-row { display: flex; align-items: flex-start; margin-bottom: 12px; }
+        .comment-row.reply { margin-left: 45px; margin-top: 5px; }
+
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            object-fit: cover; margin-right: 12px; flex-shrink: 0;
+            background: #eee;
+        }
+        .reply .avatar { width: 32px; height: 32px; }
+
+        .comment-body { flex-grow: 1; min-width: 0; }
+        .comment-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 2px; line-height: 1.2; }
+        
+        .username { font-size: 13px; font-weight: 600; color: #0f0f0f; }
+        .username::after { content: "•"; color: #606060; margin: 0 5px; font-weight: normal; font-size: 10px; }
+        .time { font-size: 12px; color: #606060; margin-right: 8px; font-weight: 400; }
+
+        .verified-badge { display: none; align-items: center; margin-right: 5px; }
+        .verified-badge.active { display: inline-flex; }
+        .verified-badge svg { width: 13px; height: 13px; fill: var(--yt-blue); }
+
+        .creator-badge {
+            display: inline-flex; align-items: center; background-color: #f2f2f2;
+            color: var(--yt-blue); font-size: 11px; font-weight: 500;
+            padding: 2px 8px; border-radius: 12px; height: 18px;
+        }
+        .creator-badge svg { width: 11px; height: 11px; fill: var(--yt-blue); margin-right: 4px; }
+
+        /* Font Size Komentar (Mudah Dibaca & Normal) */
+        .comment-text { font-size: 15px; color: #0f0f0f; line-height: 1.4; margin-bottom: 6px; white-space: pre-wrap; font-weight: 400; }
+        
+        /* Warna Biru untuk Nama Tag */
+        .blue-tag { color: var(--yt-blue); cursor: pointer; font-weight: 500; }
+
+        .footer-actions { display: flex; align-items: center; position: relative; height: 20px; }
+        .text-btn { font-size: 12px; font-weight: 500; color: #0f0f0f; margin-right: 18px; cursor: pointer; }
+        .text-btn.gray { color: #606060; }
+
+        .like-dislike-group { display: flex; align-items: center; position: absolute; right: 0; gap: 12px; }
+        .icon-tiny { display: flex; align-items: center; justify-content: center; }
+        .outline-svg { width: 14px; height: 14px; fill: none; stroke: #0f0f0f; stroke-width: 1.8; }
+
+        /* --- PANEL KONTROL HACKER --- */
+        .panel-container { 
+            width: 95%; max-width: 450px; 
+            margin: 40px 0 120px 0;
+            background: rgba(20, 0, 10, 0.95); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 2px solid var(--cp-pink); 
+            box-shadow: 0 0 20px var(--cp-pink);
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-note {
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px dashed var(--cp-pink);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            color: #ffb3d9;
+            font-size: 12px;
+            line-height: 1.5;
+            font-family: 'Fira Code', monospace;
+        }
+        .warning-note b { color: var(--cp-pink); text-shadow: 0 0 5px var(--cp-pink); }
+
+        .panel-title {
+            color: var(--cp-pink); font-family: 'Fira Code', monospace;
+            font-weight: 700; text-align: center; margin-bottom: 25px;
+            text-shadow: 0 0 10px var(--cp-pink); font-size: 16px;
+        }
+
+        .section h4 { 
+            margin: 20px 0 10px 0; 
+            font-size: 12px; 
+            color: var(--cp-pink); 
+            font-family: 'Fira Code', monospace;
+            border-bottom: 1px solid rgba(255, 0, 127, 0.3);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .input-item { margin-bottom: 12px; }
+        .input-item label { display: block; font-size: 11px; color: #888; margin-bottom: 4px; font-family: 'Fira Code', monospace; }
+        .input-item input, .input-item textarea {
+            width: 100%; background: #1a000d; border: 1px solid rgba(255, 0, 127, 0.3); 
+            color: white; padding: 10px; border-radius: 6px; font-size: 13px; outline: none;
+        }
+        .input-item input:focus { border-color: var(--cp-pink); }
+
+        .toggle-group { 
+            display: flex; align-items: center; gap: 10px; 
+            background: rgba(255, 0, 127, 0.1); padding: 10px; 
+            border-radius: 6px; border: 1px solid var(--cp-pink);
+            font-size: 12px; color: #ffb3d9; font-family: 'Fira Code', monospace;
+        }
+
+        .btn-download {
+            background-color: var(--cp-pink); color: #000; border: none; padding: 16px;
+            border-radius: 8px; width: 100%; font-weight: 900; cursor: pointer;
+            margin-bottom: 20px; font-size: 15px; font-family: 'Fira Code', monospace;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+            transition: 0.3s;
+        }
+        .btn-download:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--cp-pink); }
+
+        .footer-warning {
+            width: 100%; background: var(--cp-pink); color: #000;
+            text-align: center; padding: 15px; font-weight: 900;
+            font-family: 'Fira Code', monospace; font-size: 13px;
+            position: fixed; bottom: 0; left: 0; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="marquee-top">
+        <span>[SISTEM DIRETAS] Welcome YOUTUBE REPLICA By.BayuDubai — AKSES DITERIMA — DIBUAT OLEH BAYUDUBAI — [SISTEM DIRETAS]</span>
+    </div>
+
+    <div id="capture-target">
+        <div class="inner-content">
+            <div class="comment-row">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v1-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v1-name">By.Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v1-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v1-time">6 mnt</span>
+                    </div>
+                    <div class="comment-text" id="v1-text">Pagi kak bayu</div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <span class="text-btn gray">Sembunyikan</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-row reply">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v2-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v2-name">Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v2-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v2-time">Baru saja</span>
+                        <div class="creator-badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            Pembuat
+                        </div>
+                    </div>
+                    <div class="comment-text" id="v2-text"></div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-container">
+        <div class="warning-note">
+            <b>[!] PERINGATAN PENTING:</b><br>
+            JANGAN DI SEBAR! Jika web ini disebarkan tanpa sepengetahuan BayuDubai, maka sistem akan <b>DINONAKTIFKAN</b>.
+        </div>
+
+        <div class="panel-title">>_ INJEKSI_DATA_YOUTUBE</div>
+
+        <button class="btn-download" onclick="downloadImage()">💾 EKSEKUSI & SIMPAN PNG</button>
+        
+        <div class="section">
+            <h4>User 1 (Atas)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v1-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n1" value="By.Bayu Kurniawan" oninput="syncBalasan()"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t1" value="6 mnt" oninput="updateTxt('in-t1','v1-name')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c1" oninput="updateTxt('in-c1','v1-text')">Pagi kak bayu</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk1" checked onchange="toggleBadge('chk1', 'v1-badge')">
+                <label for="chk1">Munculkan Centang Biru</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>User 2 (Bawah)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v2-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n2" value="Bayu Kurniawan" oninput="updateTxt('in-n2','v2-name')"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t2" value="Baru saja" oninput="updateTxt('in-t2','v2-time')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c2" oninput="syncBalasan()">Pagi kk ganti cek inbox kak kirim no dana/rek</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk2" checked onchange="toggleBadge('chk2', 'v2-badge')">
+                <label for="chk2">Munculkan Centang Biru</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-warning">
+        AREA TERLARANG: JANGAN DI SEBAR (By.BayuDUBAI)
+    </div>
+
+    <script>
+        // Matrix Effect
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(13, 2, 8, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff007f";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        function syncBalasan() {
+            const namaTujuan = document.getElementById('in-n1').value;
+            const isiKomentar = document.getElementById('in-c2').value;
+            document.getElementById('v1-name').innerText = namaTujuan;
+            document.getElementById('v2-text').innerHTML = `<span class="blue-tag">${namaTujuan}</span> ${isiKomentar}`;
+        }
+
+        syncBalasan();
+
+        function updateTxt(inputId, displayId) { document.getElementById(displayId).innerText = document.getElementById(inputId).value; }
+        
+        function updateImg(input, imgId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById(imgId).src = e.target.result;
+                read<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Replica - BayuDubai Hacker Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { 
+            --cp-pink: #ff007f;
+            --cp-bg: #0d0208;
+            --yt-white: #ffffff;
+            --yt-blue: #065fd4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* MENGGUNAKAN SAN FRANCISCO REGULAR */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;                
+            background-color: var(--cp-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4;
+        }
+
+        /* Teks Berjalan */
+        .marquee-top {
+            width: 100%; background: var(--cp-pink); color: #000;
+            padding: 10px 0; font-family: 'Fira Code', monospace;
+            font-weight: 900; font-size: 14px;
+            white-space: nowrap; overflow: hidden;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 0 20px var(--cp-pink);
+        }
+
+        .marquee-top span {
+            display: inline-block; padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* --- AREA VISUAL YOUTUBE --- */
+        #capture-target {
+            background-color: var(--yt-white);
+            width: 100%;
+            max-width: 420px;
+            padding: 20px 0;
+            margin-top: 30px;
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6);
+            border-radius: 4px;
+        }
+        
+        .inner-content { padding: 0 16px; }
+        .comment-row { display: flex; align-items: flex-start; margin-bottom: 12px; }
+        .comment-row.reply { margin-left: 45px; margin-top: 5px; }
+
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            object-fit: cover; margin-right: 12px; flex-shrink: 0;
+            background: #eee;
+        }
+        .reply .avatar { width: 32px; height: 32px; }
+
+        .comment-body { flex-grow: 1; min-width: 0; }
+        .comment-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 2px; line-height: 1.2; }
+        
+        .username { font-size: 13px; font-weight: 600; color: #0f0f0f; }
+        .username::after { content: "•"; color: #606060; margin: 0 5px; font-weight: normal; font-size: 10px; }
+        .time { font-size: 12px; color: #606060; margin-right: 8px; font-weight: 400; }
+
+        .verified-badge { display: none; align-items: center; margin-right: 5px; }
+        .verified-badge.active { display: inline-flex; }
+        .verified-badge svg { width: 13px; height: 13px; fill: var(--yt-blue); }
+
+        .creator-badge {
+            display: inline-flex; align-items: center; background-color: #f2f2f2;
+            color: var(--yt-blue); font-size: 11px; font-weight: 500;
+            padding: 2px 8px; border-radius: 12px; height: 18px;
+        }
+        .creator-badge svg { width: 11px; height: 11px; fill: var(--yt-blue); margin-right: 4px; }
+
+        /* Font Size Komentar (Mudah Dibaca & Normal) */
+        .comment-text { font-size: 15px; color: #0f0f0f; line-height: 1.4; margin-bottom: 6px; white-space: pre-wrap; font-weight: 400; }
+        
+        /* Warna Biru untuk Nama Tag */
+        .blue-tag { color: var(--yt-blue); cursor: pointer; font-weight: 500; }
+
+        .footer-actions { display: flex; align-items: center; position: relative; height: 20px; }
+        .text-btn { font-size: 12px; font-weight: 500; color: #0f0f0f; margin-right: 18px; cursor: pointer; }
+        .text-btn.gray { color: #606060; }
+
+        .like-dislike-group { display: flex; align-items: center; position: absolute; right: 0; gap: 12px; }
+        .icon-tiny { display: flex; align-items: center; justify-content: center; }
+        .outline-svg { width: 14px; height: 14px; fill: none; stroke: #0f0f0f; stroke-width: 1.8; }
+
+        /* --- PANEL KONTROL HACKER --- */
+        .panel-container { 
+            width: 95%; max-width: 450px; 
+            margin: 40px 0 120px 0;
+            background: rgba(20, 0, 10, 0.95); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 2px solid var(--cp-pink); 
+            box-shadow: 0 0 20px var(--cp-pink);
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-note {
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px dashed var(--cp-pink);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            color: #ffb3d9;
+            font-size: 12px;
+            line-height: 1.5;
+            font-family: 'Fira Code', monospace;
+        }
+        .warning-note b { color: var(--cp-pink); text-shadow: 0 0 5px var(--cp-pink); }
+
+        .panel-title {
+            color: var(--cp-pink); font-family: 'Fira Code', monospace;
+            font-weight: 700; text-align: center; margin-bottom: 25px;
+            text-shadow: 0 0 10px var(--cp-pink); font-size: 16px;
+        }
+
+        .section h4 { 
+            margin: 20px 0 10px 0; 
+            font-size: 12px; 
+            color: var(--cp-pink); 
+            font-family: 'Fira Code', monospace;
+            border-bottom: 1px solid rgba(255, 0, 127, 0.3);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .input-item { margin-bottom: 12px; }
+        .input-item label { display: block; font-size: 11px; color: #888; margin-bottom: 4px; font-family: 'Fira Code', monospace; }
+        .input-item input, .input-item textarea {
+            width: 100%; background: #1a000d; border: 1px solid rgba(255, 0, 127, 0.3); 
+            color: white; padding: 10px; border-radius: 6px; font-size: 13px; outline: none;
+        }
+        .input-item input:focus { border-color: var(--cp-pink); }
+
+        .toggle-group { 
+            display: flex; align-items: center; gap: 10px; 
+            background: rgba(255, 0, 127, 0.1); padding: 10px; 
+            border-radius: 6px; border: 1px solid var(--cp-pink);
+            font-size: 12px; color: #ffb3d9; font-family: 'Fira Code', monospace;
+        }
+
+        .btn-download {
+            background-color: var(--cp-pink); color: #000; border: none; padding: 16px;
+            border-radius: 8px; width: 100%; font-weight: 900; cursor: pointer;
+            margin-bottom: 20px; font-size: 15px; font-family: 'Fira Code', monospace;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+            transition: 0.3s;
+        }
+        .btn-download:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--cp-pink); }
+
+        .footer-warning {
+            width: 100%; background: var(--cp-pink); color: #000;
+            text-align: center; padding: 15px; font-weight: 900;
+            font-family: 'Fira Code', monospace; font-size: 13px;
+            position: fixed; bottom: 0; left: 0; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="marquee-top">
+        <span>[SISTEM DIRETAS] Welcome YOUTUBE REPLICA By.BayuDubai — AKSES DITERIMA — DIBUAT OLEH BAYUDUBAI — [SISTEM DIRETAS]</span>
+    </div>
+
+    <div id="capture-target">
+        <div class="inner-content">
+            <div class="comment-row">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v1-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v1-name">By.Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v1-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v1-time">6 mnt</span>
+                    </div>
+                    <div class="comment-text" id="v1-text">Pagi kak bayu</div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <span class="text-btn gray">Sembunyikan</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-row reply">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v2-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v2-name">Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v2-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v2-time">Baru saja</span>
+                        <div class="creator-badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            Pembuat
+                        </div>
+                    </div>
+                    <div class="comment-text" id="v2-text"></div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-container">
+        <div class="warning-note">
+            <b>[!] PERINGATAN PENTING:</b><br>
+            JANGAN DI SEBAR! Jika web ini disebarkan tanpa sepengetahuan BayuDubai, maka sistem akan <b>DINONAKTIFKAN</b>.
+        </div>
+
+        <div class="panel-title">>_ INJEKSI_DATA_YOUTUBE</div>
+
+        <button class="btn-download" onclick="downloadImage()">💾 EKSEKUSI & SIMPAN PNG</button>
+        
+        <div class="section">
+            <h4>User 1 (Atas)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v1-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n1" value="By.Bayu Kurniawan" oninput="syncBalasan()"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t1" value="6 mnt" oninput="updateTxt('in-t1','v1-name')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c1" oninput="updateTxt('in-c1','v1-text')">Pagi kak bayu</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk1" checked onchange="toggleBadge('chk1', 'v1-badge')">
+                <label for="chk1">Munculkan Centang Biru</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>User 2 (Bawah)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v2-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n2" value="Bayu Kurniawan" oninput="updateTxt('in-n2','v2-name')"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t2" value="Baru saja" oninput="updateTxt('in-t2','v2-time')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c2" oninput="syncBalasan()">Pagi kk ganti cek inbox kak kirim no dana/rek</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk2" checked onchange="toggleBadge('chk2', 'v2-badge')">
+                <label for="chk2">Munculkan Centang Biru</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-warning">
+        AREA TERLARANG: JANGAN DI SEBAR (By.BayuDUBAI)
+    </div>
+
+    <script>
+        // Matrix Effect
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(13, 2, 8, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff007f";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        function syncBalasan() {
+            const namaTujuan = document.getElementById('in-n1').value;
+            const isiKomentar = document.getElementById('in-c2').value;
+            document.getElementById('v1-name').innerText = namaTujuan;
+            document.getElementById('v2-text').innerHTML = `<span class="blue-tag">${namaTujuan}</span> ${isiKomentar}`;
+        }
+
+        syncBalasan();
+
+        function updateTxt(inputId, displayId) { document.getElementById(displayId).innerText = document.getElementById(inputId).value; }
+        
+        function updateImg(input, imgId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById(imgId).src = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function toggleBadge(chkId, badgeId) {
+            const badge = document.getElementById(badgeId);
+            document.getElementById(chkId).checked ? badge.classList.add('active') : badge.classList.remove('active');
+        }
+
+        function downloadImage() {
+            html2canvas(document.querySelector("#capture-target"), { 
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'youtube-replica-bayudubai.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Replica - BayuDubai Hacker Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { 
+            --cp-pink: #ff007f;
+            --cp-bg: #0d0208;
+            --yt-white: #ffffff;
+            --yt-blue: #065fd4;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            /* MENGGUNAKAN SAN FRANCISCO REGULAR */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-weight: 400;                
+            background-color: var(--cp-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Matrix Background */
+        #matrix-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; opacity: 0.4;
+        }
+
+        /* Teks Berjalan */
+        .marquee-top {
+            width: 100%; background: var(--cp-pink); color: #000;
+            padding: 10px 0; font-family: 'Fira Code', monospace;
+            font-weight: 900; font-size: 14px;
+            white-space: nowrap; overflow: hidden;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 0 20px var(--cp-pink);
+        }
+
+        .marquee-top span {
+            display: inline-block; padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
+        }
+
+        /* --- AREA VISUAL YOUTUBE --- */
+        #capture-target {
+            background-color: var(--yt-white);
+            width: 100%;
+            max-width: 420px;
+            padding: 20px 0;
+            margin-top: 30px;
+            box-shadow: 0 0 35px rgba(255, 0, 127, 0.6);
+            border-radius: 4px;
+        }
+        
+        .inner-content { padding: 0 16px; }
+        .comment-row { display: flex; align-items: flex-start; margin-bottom: 12px; }
+        .comment-row.reply { margin-left: 45px; margin-top: 5px; }
+
+        .avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            object-fit: cover; margin-right: 12px; flex-shrink: 0;
+            background: #eee;
+        }
+        .reply .avatar { width: 32px; height: 32px; }
+
+        .comment-body { flex-grow: 1; min-width: 0; }
+        .comment-header { display: flex; align-items: center; flex-wrap: wrap; margin-bottom: 2px; line-height: 1.2; }
+        
+        .username { font-size: 13px; font-weight: 600; color: #0f0f0f; }
+        .username::after { content: "•"; color: #606060; margin: 0 5px; font-weight: normal; font-size: 10px; }
+        .time { font-size: 12px; color: #606060; margin-right: 8px; font-weight: 400; }
+
+        .verified-badge { display: none; align-items: center; margin-right: 5px; }
+        .verified-badge.active { display: inline-flex; }
+        .verified-badge svg { width: 13px; height: 13px; fill: var(--yt-blue); }
+
+        .creator-badge {
+            display: inline-flex; align-items: center; background-color: #f2f2f2;
+            color: var(--yt-blue); font-size: 11px; font-weight: 500;
+            padding: 2px 8px; border-radius: 12px; height: 18px;
+        }
+        .creator-badge svg { width: 11px; height: 11px; fill: var(--yt-blue); margin-right: 4px; }
+
+        /* Font Size Komentar (Mudah Dibaca & Normal) */
+        .comment-text { font-size: 15px; color: #0f0f0f; line-height: 1.4; margin-bottom: 6px; white-space: pre-wrap; font-weight: 400; }
+        
+        /* Warna Biru untuk Nama Tag */
+        .blue-tag { color: var(--yt-blue); cursor: pointer; font-weight: 500; }
+
+        .footer-actions { display: flex; align-items: center; position: relative; height: 20px; }
+        .text-btn { font-size: 12px; font-weight: 500; color: #0f0f0f; margin-right: 18px; cursor: pointer; }
+        .text-btn.gray { color: #606060; }
+
+        .like-dislike-group { display: flex; align-items: center; position: absolute; right: 0; gap: 12px; }
+        .icon-tiny { display: flex; align-items: center; justify-content: center; }
+        .outline-svg { width: 14px; height: 14px; fill: none; stroke: #0f0f0f; stroke-width: 1.8; }
+
+        /* --- PANEL KONTROL HACKER --- */
+        .panel-container { 
+            width: 95%; max-width: 450px; 
+            margin: 40px 0 120px 0;
+            background: rgba(20, 0, 10, 0.95); 
+            padding: 25px; 
+            border-radius: 12px; 
+            border: 2px solid var(--cp-pink); 
+            box-shadow: 0 0 20px var(--cp-pink);
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-note {
+            background: rgba(255, 0, 127, 0.1);
+            border: 1px dashed var(--cp-pink);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            color: #ffb3d9;
+            font-size: 12px;
+            line-height: 1.5;
+            font-family: 'Fira Code', monospace;
+        }
+        .warning-note b { color: var(--cp-pink); text-shadow: 0 0 5px var(--cp-pink); }
+
+        .panel-title {
+            color: var(--cp-pink); font-family: 'Fira Code', monospace;
+            font-weight: 700; text-align: center; margin-bottom: 25px;
+            text-shadow: 0 0 10px var(--cp-pink); font-size: 16px;
+        }
+
+        .section h4 { 
+            margin: 20px 0 10px 0; 
+            font-size: 12px; 
+            color: var(--cp-pink); 
+            font-family: 'Fira Code', monospace;
+            border-bottom: 1px solid rgba(255, 0, 127, 0.3);
+            padding-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .input-item { margin-bottom: 12px; }
+        .input-item label { display: block; font-size: 11px; color: #888; margin-bottom: 4px; font-family: 'Fira Code', monospace; }
+        .input-item input, .input-item textarea {
+            width: 100%; background: #1a000d; border: 1px solid rgba(255, 0, 127, 0.3); 
+            color: white; padding: 10px; border-radius: 6px; font-size: 13px; outline: none;
+        }
+        .input-item input:focus { border-color: var(--cp-pink); }
+
+        .toggle-group { 
+            display: flex; align-items: center; gap: 10px; 
+            background: rgba(255, 0, 127, 0.1); padding: 10px; 
+            border-radius: 6px; border: 1px solid var(--cp-pink);
+            font-size: 12px; color: #ffb3d9; font-family: 'Fira Code', monospace;
+        }
+
+        .btn-download {
+            background-color: var(--cp-pink); color: #000; border: none; padding: 16px;
+            border-radius: 8px; width: 100%; font-weight: 900; cursor: pointer;
+            margin-bottom: 20px; font-size: 15px; font-family: 'Fira Code', monospace;
+            clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
+            transition: 0.3s;
+        }
+        .btn-download:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--cp-pink); }
+
+        .footer-warning {
+            width: 100%; background: var(--cp-pink); color: #000;
+            text-align: center; padding: 15px; font-weight: 900;
+            font-family: 'Fira Code', monospace; font-size: 13px;
+            position: fixed; bottom: 0; left: 0; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+
+    <div class="marquee-top">
+        <span>[SISTEM DIRETAS] Welcome YOUTUBE REPLICA By.BayuDubai — AKSES DITERIMA — DIBUAT OLEH BAYUDUBAI — [SISTEM DIRETAS]</span>
+    </div>
+
+    <div id="capture-target">
+        <div class="inner-content">
+            <div class="comment-row">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v1-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v1-name">By.Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v1-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v1-time">6 mnt</span>
+                    </div>
+                    <div class="comment-text" id="v1-text">Pagi kak bayu</div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <span class="text-btn gray">Sembunyikan</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-row reply">
+                <img src="https://via.placeholder.com/40" class="avatar" id="v2-avatar">
+                <div class="comment-body">
+                    <div class="comment-header">
+                        <span class="username" id="v2-name">Bayu Kurniawan</span>
+                        <span class="verified-badge active" id="v2-badge">
+                            <svg viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zM9.8 17.3l-4.2-4.1L7 11.8l2.8 2.7L17 7.4l1.4 1.4-8.6 8.5z"/></svg>
+                        </span>
+                        <span class="time" id="v2-time">Baru saja</span>
+                        <div class="creator-badge">
+                            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            Pembuat
+                        </div>
+                    </div>
+                    <div class="comment-text" id="v2-text"></div>
+                    <div class="footer-actions">
+                        <span class="text-btn">Balas</span>
+                        <div class="like-dislike-group">
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-1.91l-.01-.01L23 10z"/></svg></div>
+                            <div class="icon-tiny"><svg class="outline-svg" viewBox="0 0 24 24"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v1.91l.01.01L1 14c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel-container">
+        <div class="warning-note">
+            <b>[!] PERINGATAN PENTING:</b><br>
+            JANGAN DI SEBAR! Jika web ini disebarkan tanpa sepengetahuan BayuDubai, maka sistem akan <b>DINONAKTIFKAN</b>.
+        </div>
+
+        <div class="panel-title">>_ INJEKSI_DATA_YOUTUBE</div>
+
+        <button class="btn-download" onclick="downloadImage()">💾 EKSEKUSI & SIMPAN PNG</button>
+        
+        <div class="section">
+            <h4>User 1 (Atas)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v1-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n1" value="By.Bayu Kurniawan" oninput="syncBalasan()"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t1" value="6 mnt" oninput="updateTxt('in-t1','v1-name')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c1" oninput="updateTxt('in-c1','v1-text')">Pagi kak bayu</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk1" checked onchange="toggleBadge('chk1', 'v1-badge')">
+                <label for="chk1">Munculkan Centang Biru</label>
+            </div>
+        </div>
+
+        <div class="section">
+            <h4>User 2 (Bawah)</h4>
+            <div class="input-item"><label>Foto Profil</label><input type="file" onchange="updateImg(this, 'v2-avatar')"></div>
+            <div class="input-item"><label>Nama</label><input type="text" id="in-n2" value="Bayu Kurniawan" oninput="updateTxt('in-n2','v2-name')"></div>
+            <div class="input-item"><label>Waktu</label><input type="text" id="in-t2" value="Baru saja" oninput="updateTxt('in-t2','v2-time')"></div>
+            <div class="input-item"><label>Komentar</label><textarea id="in-c2" oninput="syncBalasan()">Pagi kk ganti cek inbox kak kirim no dana/rek</textarea></div>
+            <div class="toggle-group">
+                <input type="checkbox" id="chk2" checked onchange="toggleBadge('chk2', 'v2-badge')">
+                <label for="chk2">Munculkan Centang Biru</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-warning">
+        AREA TERLARANG: JANGAN DI SEBAR (By.BayuDUBAI)
+    </div>
+
+    <script>
+        // Matrix Effect
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*";
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(13, 2, 8, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#ff007f";
+            ctx.font = fontSize + "px monospace";
+            for (let i = 0; i < drops.length; i++) {
+                const text = letters[Math.floor(Math.random() * letters.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+
+        function syncBalasan() {
+            const namaTujuan = document.getElementById('in-n1').value;
+            const isiKomentar = document.getElementById('in-c2').value;
+            document.getElementById('v1-name').innerText = namaTujuan;
+            document.getElementById('v2-text').innerHTML = `<span class="blue-tag">${namaTujuan}</span> ${isiKomentar}`;
+        }
+
+        syncBalasan();
+
+        function updateTxt(inputId, displayId) { document.getElementById(displayId).innerText = document.getElementById(inputId).value; }
+        
+        function updateImg(input, imgId) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => document.getElementById(imgId).src = e.target.result;
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        function toggleBadge(chkId, badgeId) {
+            const badge = document.getElementById(badgeId);
+            document.getElementById(chkId).checked ? badge.classList.add('active') : badge.classList.remove('active');
+        }
+
+        function downloadImage() {
+            html2canvas(document.querySelector("#capture-target"), { 
+                scale: 3, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'youtube-replica-bayudubai.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
+er.readAsDataURL(input.files[0]);
             }
         }
         
