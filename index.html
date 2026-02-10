@@ -47,7 +47,7 @@
             width: 100%; max-width: 420px;
             padding: 15px 0; margin-top: 40px;
             border-radius: 4px;
-            /* Efek Glow pada hasil output agar menonjol dari background gelap */
+            /* Efek Glow dan Border ini akan dihapus sementara saat download */
             box-shadow: 0 0 30px rgba(255, 0, 127, 0.4);
             border: 1px solid var(--cp-pink);
         }
@@ -63,7 +63,8 @@
         .comment-header { display: flex; align-items: center; margin-bottom: 2px; flex-wrap: wrap; }
         .username { font-size: 13px; font-weight: 700; color: #0f0f0f; margin-right: 4px; }
         
-        .verified-icon { width: 14px; height: 14px; display: none; margin-right: 4px; vertical-align: middle; }
+        /* UPDATE: Ukuran icon diperkecil jadi 12px */
+        .verified-icon { width: 12px; height: 12px; display: none; margin-right: 4px; vertical-align: middle; }
         .verified-icon.active { display: inline-block; }
 
         .dot-separator { font-size: 10px; color: var(--yt-gray); margin: 0 4px; }
@@ -87,7 +88,6 @@
         .like-dislike-group { display: flex; align-items: center; gap: 16px; }
         .icon-btn { display: flex; align-items: center; cursor: pointer; }
         
-        /* UPDATE: Ukuran icon diperkecil jadi 14px */
         .outline-svg { width: 14px; height: 14px; fill: none; stroke: #0f0f0f; stroke-width: 1.5; }
 
         /* --- PANEL KONTROL CYBERPINK HACKER TEMA --- */
@@ -95,7 +95,6 @@
             width: 95%; max-width: 450px; margin: 50px 0;
             background: var(--panel-bg); padding: 25px; 
             border-radius: 12px; 
-            /* Border neon ganda dan glow agresif */
             border: 2px solid var(--cp-pink);
             box-shadow: 0 0 25px var(--cp-pink), inset 0 0 10px var(--cp-pink);
             font-family: 'Fira Code', monospace;
@@ -124,7 +123,7 @@
         }
 
         .panel-section { 
-            border: 1px solid var(--cp-blue); /* Aksen biru untuk section */
+            border: 1px solid var(--cp-blue); 
             padding: 20px; border-radius: 8px; margin-bottom: 20px; 
             background: rgba(0, 188, 212, 0.05);
             box-shadow: inset 0 0 10px rgba(0, 188, 212, 0.2);
@@ -152,7 +151,6 @@
             border-radius: 4px; width: 100%; font-weight: 900; cursor: pointer; transition: 0.3s;
             font-family: 'Fira Code', monospace; text-transform: uppercase; letter-spacing: 2px;
             font-size: 16px;
-            /* Bentuk tombol cyber */
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0% 100%);
         }
         .btn-download:hover { 
@@ -291,11 +289,23 @@
         }
 
         function downloadImage() {
-            html2canvas(document.querySelector("#capture-target"), { scale: 3, useCORS: true }).then(canvas => {
+            // Ambil elemen target
+            const target = document.querySelector("#capture-target");
+            
+            // 1. HAPUS border dan shadow sementara sebelum capture
+            target.style.border = 'none';
+            target.style.boxShadow = 'none';
+
+            html2canvas(target, { scale: 3, useCORS: true }).then(canvas => {
+                // 2. Proses download gambar bersih
                 const link = document.createElement('a');
                 link.download = 'bayudubai-replica-hacked.png';
                 link.href = canvas.toDataURL();
                 link.click();
+
+                // 3. KEMBALIKAN style border dan shadow agar terlihat lagi di web
+                target.style.border = ''; // Reset ke nilai CSS awal
+                target.style.boxShadow = ''; // Reset ke nilai CSS awal
             });
         }
 
